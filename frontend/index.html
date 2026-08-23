@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Skill & Certification System</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP NAVBAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo & Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg text-white leading-tight">CareerSkill <span class="text-indigo-400 font-normal">Engine</span></h1>
+          <p class="text-xs text-slate-400">Mini-Project • FastAPI + In-Memory SQLite</p>
+        </div>
+      </div>
+
+      <!-- Live API Connection Status -->
+      <div class="flex items-center space-x-3">
+        <div id="api-status-badge" class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs text-slate-300">
+          <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span>Connecting API...</span>
+        </div>
+        <a href="http://127.0.0.1:8000/docs" target="_blank" class="hidden sm:flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 text-xs hover:bg-indigo-600/30 transition">
+          <i class="fa-solid fa-book-open"></i>
+          <span>Swagger Docs</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION TABS -->
+  <nav class="bg-slate-900 border-b border-slate-800 py-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap gap-2">
+      <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="tab-btn active px-4 py-2 rounded-xl text-sm font-semibold flex items-center space-x-2 transition">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Dashboard</span>
+      </button>
+
+      <button onclick="switchTab('catalog')" id="tab-btn-catalog" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Skill Catalog</span>
+      </button>
+
+      <button onclick="switchTab('certifications')" id="tab-btn-certifications" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-award"></i>
+        <span>Certificates</span>
+        <span id="cert-count-badge" class="ml-1 px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-xs">1</span>
+      </button>
+
+      <button onclick="switchTab('cloud')" id="tab-btn-cloud" class="tab-btn px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 flex items-center space-x-2 transition">
+        <i class="fa-solid fa-cloud"></i>
+        <span>Cloud Architecture</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER CONTENT -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. DASHBOARD TAB -->
+    <section id="tab-dashboard" class="tab-content block space-y-8">
+      <!-- Stats Row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-panel p-5 rounded-2xl">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+            <span>TOTAL SKILLS AVAILABLE</span>
+            <i class="fa-solid fa-book text-indigo-400 text-base"></i>
+          </div>
+          <div id="stat-total-skills" class="text-3xl font-bold text-white">--</div>
+          <p class="text-xs text-slate-400 mt-1">Catalog items</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+            <span>ACTIVE ENROLLMENTS</span>
+            <i class="fa-solid fa-spinner text-amber-400 text-base"></i>
+          </div>
+          <div id="stat-active-enrollments" class="text-3xl font-bold text-amber-400">--</div>
+          <p class="text-xs text-slate-400 mt-1">In progress & enrolled</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+            <span>COMPLETED & CERTIFIED</span>
+            <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+          </div>
+          <div id="stat-completed" class="text-3xl font-bold text-emerald-400">--</div>
+          <p class="text-xs text-slate-400 mt-1">100% completion</p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-2xl">
+          <div class="flex items-center justify-between text-slate-400 text-xs font-semibold mb-2">
+            <span>LEARNING HOURS</span>
+            <i class="fa-solid fa-clock text-sky-400 text-base"></i>
+          </div>
+          <div id="stat-hours" class="text-3xl font-bold text-sky-400">--</div>
+          <p class="text-xs text-slate-400 mt-1">Earned skill credit</p>
+        </div>
+      </div>
+
+      <!-- Enrolled Skills Active List -->
+      <div class="glass-panel rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-bars-progress text-indigo-400"></i>
+              <span>My Enrolled Skills & Progress</span>
+            </h2>
+            <p class="text-xs text-slate-400">Track learning progress or complete modules to issue verified certificates.</p>
+          </div>
+          <button onclick="switchTab('catalog')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium transition">
+            + Enroll New Skill
+          </button>
+        </div>
+
+        <div id="enrollments-list" class="space-y-4">
+          <!-- Dynamic rendering from app.js -->
+          <div class="text-center py-8 text-slate-500 text-sm">Loading enrollments...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SKILL CATALOG TAB -->
+    <section id="tab-catalog" class="tab-content hidden space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-indigo-400"></i>
+            <span>Skill Catalog</span>
+          </h2>
+          <p class="text-xs text-slate-400">Explore industry-standard cloud, DevOps, and software skills.</p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div id="category-filters" class="flex flex-wrap gap-1.5">
+          <button onclick="filterCatalog('All')" class="cat-filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white">All</button>
+          <button onclick="filterCatalog('Cloud')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:bg-slate-700">Cloud</button>
+          <button onclick="filterCatalog('DevOps')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:bg-slate-700">DevOps</button>
+          <button onclick="filterCatalog('Backend')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:bg-slate-700">Backend</button>
+          <button onclick="filterCatalog('Security')" class="cat-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:bg-slate-700">Security</button>
+        </div>
+      </div>
+
+      <!-- Catalog Grid -->
+      <div id="skills-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamic skills loaded from API -->
+      </div>
+    </section>
+
+    <!-- 3. CERTIFICATIONS TAB -->
+    <section id="tab-certifications" class="tab-content hidden space-y-6">
+      <div>
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-award text-amber-400"></i>
+          <span>Verified Certifications</span>
+        </h2>
+        <p class="text-xs text-slate-400">Certificates automatically generated upon achieving 100% completion on enrolled skills.</p>
+      </div>
+
+      <div id="certifications-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Dynamic certificates loaded from API -->
+      </div>
+    </section>
+
+    <!-- 4. CLOUD ARCHITECTURE MAPPING TAB -->
+    <section id="tab-cloud" class="tab-content hidden space-y-8">
+      <div class="glass-panel p-6 rounded-2xl">
+        <div class="flex items-center space-x-3 mb-3">
+          <div class="p-3 bg-indigo-500/20 text-indigo-400 rounded-xl">
+            <i class="fa-solid fa-network-wired text-2xl"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-white">Local vs Real Cloud Deployment Architecture</h2>
+            <p class="text-xs text-slate-400">Coursework mapping guide for viva defense and project explanation.</p>
+          </div>
+        </div>
+
+        <p class="text-sm text-slate-300 leading-relaxed mb-6">
+          This mini-project is designed to run locally for development and evaluation using an in-memory SQLite database and FastAPI async web server. In a production cloud environment (e.g. AWS or GCP), each layer seamlessly maps to managed cloud infrastructure services.
+        </p>
+
+        <!-- Visual Mapping Architecture Diagram -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <!-- Box 1 -->
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-indigo-500/30 text-center">
+            <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Frontend Layer</span>
+            <h3 class="text-lg font-bold text-white mt-1">Single Page UI</h3>
+            <p class="text-xs text-slate-400 mt-2">Local: Static HTML/JS</p>
+            <div class="my-3 py-1 bg-indigo-600/20 text-indigo-300 text-xs rounded border border-indigo-500/30 font-semibold">
+              ☁️ AWS S3 + CloudFront CDN
+            </div>
+            <p class="text-[11px] text-slate-400">Global edge caching & instant static asset delivery.</p>
+          </div>
+
+          <!-- Box 2 -->
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-sky-500/30 text-center">
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Backend API Layer</span>
+            <h3 class="text-lg font-bold text-white mt-1">FastAPI REST Server</h3>
+            <p class="text-xs text-slate-400 mt-2">Local: Uvicorn ASGI (:8000)</p>
+            <div class="my-3 py-1 bg-sky-600/20 text-sky-300 text-xs rounded border border-sky-500/30 font-semibold">
+              ☁️ AWS EC2 / GCP Cloud Run
+            </div>
+            <p class="text-[11px] text-slate-400">Auto-scaling container workloads running Uvicorn workers.</p>
+          </div>
+
+          <!-- Box 3 -->
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-emerald-500/30 text-center">
+            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Database Layer</span>
+            <h3 class="text-lg font-bold text-white mt-1">SQLAlchemy ORM</h3>
+            <p class="text-xs text-slate-400 mt-2">Local: SQLite <code class="text-amber-300">:memory:</code></p>
+            <div class="my-3 py-1 bg-emerald-600/20 text-emerald-300 text-xs rounded border border-emerald-500/30 font-semibold">
+              ☁️ AWS RDS (PostgreSQL)
+            </div>
+            <p class="text-[11px] text-slate-400">Managed relational database with auto-backups & multi-AZ failover.</p>
+          </div>
+
+          <!-- Box 4 -->
+          <div class="bg-slate-800/80 p-4 rounded-xl border border-amber-500/30 text-center">
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">API Documentation</span>
+            <h3 class="text-lg font-bold text-white mt-1">Swagger OpenAPI</h3>
+            <p class="text-xs text-slate-400 mt-2">Local: <code class="text-amber-300">/docs</code> endpoint</p>
+            <div class="my-3 py-1 bg-amber-600/20 text-amber-300 text-xs rounded border border-amber-500/30 font-semibold">
+              ☁️ AWS API Gateway
+            </div>
+            <p class="text-[11px] text-slate-400">Rate limiting, endpoint throttling & swagger validation.</p>
+          </div>
+        </div>
+
+        <!-- Detailed Mapping Table -->
+        <h3 class="text-base font-bold text-white mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-indigo-400"></i>
+          <span>Architecture Breakdown & Component Mapping</span>
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-700 bg-slate-800/50 text-slate-300">
+                <th class="p-3 font-semibold">Component</th>
+                <th class="p-3 font-semibold">Local Implementation</th>
+                <th class="p-3 font-semibold">Cloud Equivalent (AWS/GCP)</th>
+                <th class="p-3 font-semibold">Key Advantage</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300">
+              <tr>
+                <td class="p-3 font-bold text-white">Backend Web Server</td>
+                <td class="p-3">FastAPI (Python async)</td>
+                <td class="p-3 text-indigo-300 font-medium">AWS EC2 / GCP Cloud Run</td>
+                <td class="p-3 text-slate-400">Asynchronous I/O handling thousands of requests per second</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Database Engine</td>
+                <td class="p-3">SQLite In-Memory (<code class="text-amber-300">:memory:</code>)</td>
+                <td class="p-3 text-emerald-300 font-medium">AWS RDS PostgreSQL</td>
+                <td class="p-3 text-slate-400">Zero configuration for local demo; instant persistent scaling in cloud</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Frontend Hosting</td>
+                <td class="p-3">Static Single-Page HTML/JS</td>
+                <td class="p-3 text-sky-300 font-medium">AWS S3 + CloudFront CDN</td>
+                <td class="p-3 text-slate-400">Low-cost distribution with low latency worldwide</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold text-white">Certificate Generation</td>
+                <td class="p-3">Dynamic Unique Hash Generator</td>
+                <td class="p-3 text-amber-300 font-medium">AWS Lambda + S3 Signed URLs</td>
+                <td class="p-3 text-slate-400">Immutable credential verification code generated on completion</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CERTIFICATE PRINTABLE MODAL -->
+  <div id="cert-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="relative w-full max-w-3xl">
+      <!-- Modal Close Button -->
+      <div class="absolute -top-12 right-0 flex items-center space-x-3 no-print">
+        <button onclick="window.print()" class="px-4 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs transition flex items-center space-x-1.5">
+          <i class="fa-solid fa-print"></i>
+          <span>Print / Save PDF</span>
+        </button>
+        <button onclick="closeCertModal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs transition">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <!-- Printable Certificate Body -->
+      <div class="certificate-paper rounded-xl overflow-hidden">
+        <div class="certificate-inner-border text-center space-y-6">
+          <div class="flex items-center justify-between border-b border-amber-600/30 pb-4">
+            <div class="text-left">
+              <span class="text-xs font-bold uppercase tracking-widest text-amber-700">Official Credential</span>
+              <h2 class="text-lg font-bold text-slate-900">CareerSkill Institute</h2>
+            </div>
+            <div class="w-12 h-12 rounded-full gold-seal flex items-center justify-center text-white text-xl font-bold shadow-lg">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+          </div>
+
+          <div class="py-4 space-y-3">
+            <p class="text-xs uppercase tracking-widest text-slate-500">This is to certify that</p>
+            <h1 class="cert-font text-3xl font-extrabold text-slate-900 tracking-tight">Student Candidate</h1>
+            <p class="text-xs text-slate-600 max-w-md mx-auto">has successfully completed all requirements, practical assessments, and module coursework for</p>
+            <h2 id="modal-cert-title" class="text-xl font-bold text-indigo-900 pt-1">Skill Title</h2>
+          </div>
+
+          <div class="pt-6 border-t border-slate-200 flex items-end justify-between text-xs text-slate-600">
+            <div class="text-left">
+              <p class="text-[10px] text-slate-400 uppercase tracking-wider">Credential ID</p>
+              <p id="modal-cert-code" class="mono-font font-bold text-slate-800">CERT-XXXX-2026-XXXX</p>
+            </div>
+            <div class="text-center">
+              <div class="w-32 border-b border-slate-400 mb-1"></div>
+              <p class="text-[10px] text-slate-500 uppercase">Authorized Signature</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[10px] text-slate-400 uppercase tracking-wider">Issue Date</p>
+              <p id="modal-cert-date" class="font-medium text-slate-800">August 22, 2026</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
