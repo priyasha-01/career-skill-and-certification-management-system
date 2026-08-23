@@ -235,12 +235,14 @@ def get_stats(db: Session = Depends(get_db)):
 
 @app.api_route("/{path_name:path}", methods=["GET", "POST", "PUT", "DELETE"])
 def catch_all(path_name: str, request: Request):
+    import os
     return {
         "request_url": str(request.url),
         "request_path": request.url.path,
         "path_name": path_name,
         "scope_path": request.scope.get("path"),
         "root_path": request.scope.get("root_path"),
-        "headers": dict(request.headers)
+        "headers": dict(request.headers),
+        "environ": dict(os.environ)
     }
 
