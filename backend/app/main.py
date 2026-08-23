@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import random
 import string
+import os
 from datetime import datetime
 
 from .database import engine, Base, get_db
@@ -121,9 +123,20 @@ def seed_initial_data():
 def startup_event():
     seed_initial_data()
 
+# Resolve base directory path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 @app.get("/")
 def read_root():
-    return {"message": "Career Skill & Certification System API is active", "docs": "/docs"}
+    return FileResponse(os.path.join(BASE_DIR, "index.html"))
+
+@app.get("/styles.css")
+def read_styles():
+    return FileResponse(os.path.join(BASE_DIR, "styles.css"))
+
+@app.get("/app.js")
+def read_app_js():
+    return FileResponse(os.path.join(BASE_DIR, "app.js"))
 
 # --- SKILLS ENDPOINTS ---
 @app.get("/api/skills", response_model=List[schemas.SkillOut])
