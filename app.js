@@ -55,7 +55,7 @@ function updateStatusBadge(online) {
   if (online) {
     badge.innerHTML = `
       <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-      <span class="text-emerald-300 font-medium">FastAPI Connected (:8000)</span>
+      <span class="text-emerald-300 font-medium">FastAPI Connected</span>
     `;
     badge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs";
   } else {
@@ -365,6 +365,7 @@ function openCertModal(code, title, dateStr) {
   document.getElementById("cert-modal").classList.remove("hidden");
 }
 
+// CLOSE MODAL ON CLICK OUTSIDE OR CLOSE BUTTON
 function closeCertModal() {
   document.getElementById("cert-modal").classList.add("hidden");
 }

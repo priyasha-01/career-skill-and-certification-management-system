@@ -37,16 +37,11 @@ First, make sure you have Python 3.8+ installed on your system.
 No complex build process or packaging tool is required for the frontend.
 
 1. **Direct Execution**:
-   - Double-click or open [frontend/index.html](frontend/index.html) directly in any modern web browser (Chrome, Edge, Firefox, etc.).
+   - Double-click or open [index.html](index.html) directly in any modern web browser (Chrome, Edge, Firefox, etc.).
 
 2. **Alternative (Using Python HTTP Server)**:
    If you want to run the frontend over a local web server:
-   - Open a separate terminal window.
-   - Navigate to the frontend directory:
-     ```bash
-   cd p1cloud_based/frontend
-     ```
-   - Start a simple python HTTP server:
+   - Start a simple python HTTP server in the project root:
      ```bash
      python -m http.server 3000
      ```
@@ -57,12 +52,11 @@ No complex build process or packaging tool is required for the frontend.
 ## 🛠️ Project Structure
 
 - **`backend/`**
-  - `requirements.txt`: Python package requirements.
   - `app/main.py`: Main FastAPI entry point containing routes, CORS middleware, and automatic SQLite database seeding on startup.
   - `app/database.py`: SQLite in-memory configuration (`sqlite:///:memory:`).
   - `app/models.py`: SQLAlchemy database models (`Skill`, `Enrollment`, `Certification`).
   - `app/schemas.py`: Pydantic validation schemas.
-- **`frontend/`**
+- **Root Directory Static Files**
   - `index.html`: Responsive UI dashboard layout with customizable tabs and certificate viewing modal.
   - `styles.css`: Custom glassmorphism styles, progress bars, and print stylesheet rules.
   - `app.js`: Main frontend script managing REST API requests, DOM updates, tab-switching, and offline/standalone mode.
