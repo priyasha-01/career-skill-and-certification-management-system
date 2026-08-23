@@ -1,21 +1,80 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyd
+*$py.class
+*.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
-.venv/
+.installed.cfg
+*.egg
+
+# Virtual Environment
 venv/
+.venv/
 env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables & Secrets
 .env
+.env.local
+.env.*.local
+*.env
 
-# Local databases and runtime files
-*.sqlite3
+# SQLite / Database
 *.db
-*.log
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite
+data/*.sqlite3
 
-# IDE and OS files
+# Logs & Temporary Files
+*.log
+logs/
+tmp/
+temp/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# IDE & Editor Files
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Operating System Files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+
+# Deployment / Vercel
+.vercel/

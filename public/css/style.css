@@ -1,0 +1,239 @@
+/* Custom variables and extensions to Tailwind */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f8fafc;
+    color: #0f172a;
+}
+
+/* Glassmorphism card utility */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Custom transitions */
+.transition-all-300 {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Hide scrollbar for clean dashboard feeds */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Student Profile Drawer transitions */
+.drawer-container {
+    transition: transform 0.3s ease-in-out;
+}
+
+.drawer-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Pulsing dot for pending actions */
+.pulse-dot {
+    position: relative;
+}
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #f59e0b;
+    border-radius: 50%;
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    animation: pulse 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+    to {
+        box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+    }
+}
+
+/* Chart container styling to prevent canvas resizing overflow */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 260px;
+}
+
+/* Dark Mode Overrides (Without Tailwind Plugin) */
+body.dark {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+/* Base surface overrides */
+body.dark .bg-white {
+    background-color: #1e293b;
+}
+
+body.dark .bg-slate-50, 
+body.dark .bg-gray-50 {
+    background-color: #0f172a;
+}
+
+/* Elevate specific container elements with borders and shadows */
+body.dark nav,
+body.dark aside > div,
+body.dark #student-drawer,
+body.dark footer {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Elevate modals even higher */
+body.dark [id$="-modal"] > div {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Borders */
+body.dark .border,
+body.dark .border-gray-100,
+body.dark .border-gray-200,
+body.dark .border-slate-100,
+body.dark .border-slate-200 {
+    border-color: #334155;
+}
+
+body.dark .border-dashed {
+    border-color: #475569;
+}
+
+/* Text Hierarchy */
+body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6,
+body.dark .text-gray-900, body.dark .text-gray-800, body.dark .text-slate-900, body.dark .text-slate-800 {
+    color: #f8fafc;
+}
+
+body.dark .text-gray-600, body.dark .text-gray-500, body.dark .text-slate-600, body.dark .text-slate-500 {
+    color: #94a3b8;
+}
+
+body.dark .text-gray-400, body.dark .text-slate-400 {
+    color: #64748b;
+}
+
+/* Form Inputs */
+body.dark input,
+body.dark select,
+body.dark textarea {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+body.dark input:focus,
+body.dark select:focus,
+body.dark textarea:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 1px #818cf8;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+    color: #64748b;
+}
+
+/* Theme Toggle Button & Tabs */
+body.dark #theme-toggle {
+    background-color: #334155;
+    color: #e2e8f0;
+    border-color: #475569;
+}
+
+body.dark #theme-toggle:hover {
+    background-color: #475569;
+}
+
+body.dark .tab-btn:not(.bg-indigo-50) {
+    color: #94a3b8;
+}
+
+body.dark .tab-btn:not(.bg-indigo-50):hover {
+    background-color: #334155;
+    color: #f8fafc;
+}
+
+/* Rich Badges for Dark Mode (Preserve Colors) */
+body.dark .bg-indigo-50 { background-color: rgba(79, 70, 229, 0.15); border-color: rgba(79, 70, 229, 0.3); color: #818cf8; }
+body.dark .text-indigo-600 { color: #818cf8; }
+
+body.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: #34d399; }
+body.dark .text-emerald-500, body.dark .text-emerald-600, body.dark .text-emerald-700 { color: #34d399; }
+
+body.dark .bg-rose-50, body.dark .bg-red-50 { background-color: rgba(244, 63, 94, 0.15); border-color: rgba(244, 63, 94, 0.3); color: #fb7185; }
+body.dark .text-rose-600, body.dark .text-rose-700, body.dark .text-red-600, body.dark .text-red-500 { color: #fb7185; }
+
+body.dark .bg-amber-50, body.dark .bg-yellow-50 { background-color: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); color: #fbbf24; }
+body.dark .text-amber-600, body.dark .text-amber-700, body.dark .text-yellow-600, body.dark .text-yellow-700 { color: #fbbf24; }
+
+body.dark .bg-violet-50 { background-color: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.3); color: #a78bfa; }
+body.dark .text-violet-600, body.dark .text-violet-700 { color: #a78bfa; }
+
+body.dark .bg-blue-50 { background-color: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+body.dark .text-blue-600, body.dark .text-blue-700 { color: #60a5fa; }
+
+body.dark .bg-cyan-50 { background-color: rgba(6, 182, 212, 0.15); border-color: rgba(6, 182, 212, 0.3); color: #22d3ee; }
+body.dark .text-cyan-600, body.dark .text-cyan-700 { color: #22d3ee; }
+
+/* Special Charts Setup */
+body.dark canvas {
+    filter: invert(1) hue-rotate(180deg) brightness(1.2) contrast(0.9);
+}
+
+
+/* Hover overrides */
+body.dark .hover\:bg-gray-50:hover, 
+body.dark .hover\:bg-slate-50:hover {
+    background-color: #334155;
+}
+body.dark .hover\:bg-gray-100:hover, 
+body.dark .hover\:bg-slate-100:hover,
+body.dark .hover\:bg-slate-200:hover {
+    background-color: #475569;
+}
+
+body.dark .hover\:bg-indigo-50:hover,
+body.dark .hover\:bg-indigo-100:hover {
+    background-color: rgba(79, 70, 229, 0.25);
+}
+
+body.dark .hover\:bg-red-50:hover,
+body.dark .hover\:bg-rose-50:hover {
+    background-color: rgba(244, 63, 94, 0.25);
+}
