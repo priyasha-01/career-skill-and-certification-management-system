@@ -37,15 +37,15 @@ First, make sure you have Python 3.8+ installed on your system.
 No complex build process or packaging tool is required for the frontend.
 
 1. **Direct Execution**:
-   - Double-click or open [index.html](index.html) directly in any modern web browser (Chrome, Edge, Firefox, etc.).
+   - Double-click or open [public/index.html](public/index.html) directly in any modern web browser (Chrome, Edge, Firefox, etc.).
 
 2. **Alternative (Using Python HTTP Server)**:
    If you want to run the frontend over a local web server:
-   - Start a simple python HTTP server in the project root:
+   - Start a simple python HTTP server:
      ```bash
      python -m http.server 3000
      ```
-   - Open [http://localhost:3000](http://localhost:3000) in your web browser.
+   - Open [http://localhost:3000/public/](http://localhost:3000/public/) in your web browser.
 
 ---
 
@@ -56,7 +56,7 @@ No complex build process or packaging tool is required for the frontend.
   - `app/database.py`: SQLite in-memory configuration (`sqlite:///:memory:`).
   - `app/models.py`: SQLAlchemy database models (`Skill`, `Enrollment`, `Certification`).
   - `app/schemas.py`: Pydantic validation schemas.
-- **Root Directory Static Files**
+- **`public/` (Static Assets Folder)**
   - `index.html`: Responsive UI dashboard layout with customizable tabs and certificate viewing modal.
   - `styles.css`: Custom glassmorphism styles, progress bars, and print stylesheet rules.
   - `app.js`: Main frontend script managing REST API requests, DOM updates, tab-switching, and offline/standalone mode.
