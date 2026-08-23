@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
@@ -231,5 +231,16 @@ def get_stats(db: Session = Depends(get_db)):
         "completed": completed_count,
         "total_certs": total_certs,
         "hours_earned": total_hours_earned
+    }
+
+@app.api_route("/{path_name:path}", methods=["GET", "POST", "PUT", "DELETE"])
+def catch_all(path_name: str, request: Request):
+    return {
+        "request_url": str(request.url),
+        "request_path": request.url.path,
+        "path_name": path_name,
+        "scope_path": request.scope.get("path"),
+        "root_path": request.scope.get("root_path"),
+        "headers": dict(request.headers)
     }
 
