@@ -75,3 +75,27 @@ The **Cloud Architecture** tab in the application maps local services to product
 - **SQLite In-Memory** ➡️ AWS RDS PostgreSQL
 - **Static Assets** ➡️ AWS S3 + CloudFront CDN
 - **Certificate Verification Code** ➡️ AWS Lambda / Cryptographic Signatures
+
+---
+
+## ⚡ Deployment to Vercel
+
+This project is pre-configured to be deployed as a single, unified Vercel application. The backend runs as a Python serverless function, and the frontend is served as static files.
+
+### Deploying the App
+1. Install the Vercel CLI if you haven't already:
+   ```bash
+   npm install -g vercel
+   ```
+2. Log in and deploy from the root directory:
+   ```bash
+   vercel
+   ```
+   *Follow the prompts to link and deploy the project.*
+
+### Local Development simulating Vercel Environment
+You can simulate the production serverless environment locally by running:
+```bash
+vercel dev
+```
+Open **[http://localhost:3000](http://localhost:3000)** to interact with your local frontend and serverless API proxy.
