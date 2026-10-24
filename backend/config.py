@@ -1,24 +1,32 @@
+
 import os
 
-# Detect if running in Vercel Serverless environment
 IS_VERCEL = os.environ.get("VERCEL") == "1"
 
-# Define SQLite Database URL
-# In Vercel, the filesystem is read-only except for /tmp.
-# For local dev, store it in the workspace under ./data/skills.db.
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+# Use the installed psycopg driver for PostgreSQL
+if DATABASE_URL and DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://", "postgresql+psycopg://", 1
+    )
+
 if IS_VERCEL:
-    DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////tmp/skills.db")
+    if not DATABASE_URL:
+        raise RuntimeError(
+            "DATABASE_URL is missing. Configure the PostgreSQL "
+            "connection URL in Vercel Environment Variables."
+        )
 else:
-    # Ensure local directory exists (handled in run.py, but safe fallback here)
     try:
         os.makedirs("./data", exist_ok=True)
     except OSError:
         pass
-    DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./data/skills.db")
 
-# CORS configurations
+    if not DATABASE_URL:
+        DATABASE_URL = "sqlite:///./data/skills.db"
+
 ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:3000",
-    "https://*.vercel.app"
 ]

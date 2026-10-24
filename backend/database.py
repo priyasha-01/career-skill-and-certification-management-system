@@ -22,7 +22,7 @@ def get_db():
 
 def init_db():
     """Initializes the database schema and performs seeding if empty."""
-    from backend.models import Student  # Import here to avoid circular dependencies
+    from backend import models  # Import here to avoid circular dependencies
     
     # Create all tables
     Base.metadata.create_all(bind=engine)
@@ -30,7 +30,7 @@ def init_db():
     # Check if the database needs to be seeded (e.g., if there are no students)
     db = SessionLocal()
     try:
-        student_count = db.query(Student).count()
+        student_count = db.query(models.Student).count()
         if student_count == 0:
             print("Database is empty. Seeding realistic sample data...")
             from backend.seed import seed_database
